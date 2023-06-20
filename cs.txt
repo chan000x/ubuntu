@@ -1,2 +1,759 @@
-AUOISFDSJLFDJLSDKFLLDJFLDLFJLJDFDL
-DFHKDHKFJKDJFKSDKHFKJS
+ 1. To show which version is installed on your system : cat /etc/os-release
+ 
+2. To show the name of the currently logged user : whoami
+
+3. To show the current month calendar with the current date highlighted : cal
+
+4. To show the calendar of a specific month of the year
+for example, "September2023" : cal 9 2023
+
+5. To show calendar for the current whole year with the current date highlighted : cal -y
+
+6. To show the whole calendar for a specific year 
+for example, "2024" : cal 2024
+
+7. To show the calendar of previous, current (along with current date highlighted) and next month : cal -3
+
+8. To print the following message on the screen "About 90% of the internet is powered by "Linux" servers." :
+   echo "About 90% of the internet is powered by \"Linux\" servers." 
+9. To show your home directory : echo ~ 
+
+10. To list all files in your home directory : ls 
+-----------------------------------------------------------------
+
+
+8. Append the content of the "myfirstfile.txt" to "mysecondfile.txt":
+      cat ./doc1/myfirstfile.txt >> ./doc2/mysecondfile.txt
+
+12. Show the folder hierarchy of "/home" in a tree structure.
+      tree /home
+
+13. Give execution permission to "myfirstfile.txt".
+       chmod +x ./mylocal/src/doc_folder/myfirstfile.txt
+14. Remove permission to write for the "mysecondfile.txt".
+       chmod -w ./mylocal/src/doc/folder/mysecondfile.txt
+15. Add permission to write only to the owner and the group for the "mythirdfile.txt".
+        chmod 664 ./mylocal/src/doc/folder/mythirdfile.txt
+16. Restrict all permission to any user for the folder "home/mylocal/doc-folder".
+        chmod 000 ./mylocal/src/doc_folder
+17. Do not give permission to any other user to edit or execute files in the folder "csc_docs".
+         chmod o-wx ./csc_docs
+ 
+ 
+ -----------------------------------------------------------------------------
+ 
+ 1. Display your current directory : pwd
+2. Change the directory to Object directory : cd Object
+
+3. Create a new directory called Integer within your current working directory (Object) : mkdir Integer
+
+4. List all the directories in Object : ls -d
+
+5. Rename Integer to NewInteger : mv Integer NewInteger
+
+6. Create a file called testl.txt under the Vowel directory : cd Vowel
+                                                              touch testl.txt
+
+7. Create a file called test2.txt under the Digit directory : cd Digit
+                                                              touch test2.txt
+
+8. Rename testl.txt to vowel.txt and add the letters. "a, e, i, o, u" in that file : mv testl.txt vowel.txt
+                                                                                     echo "a, e, i, o, u" >> vowel.txt
+
+9. Change the access permission for vowel.txt to read only : chmod 444 vowel.txt
+
+10. Copy vowel.txt from Vowel directory to Consonant directory : cp vowel.txt Consonant
+
+11. Change the access permission for vowel.txt from read only to read and write : chmod 644 vowel.txt
+
+12. Rename vowel.txt to consonant txt and add the consonant letters in that file : mv vowel.txt consonant.txt
+																				echo "b, c, d, f, g" >> consonant.txt
+
+13. Count number of lines in consonant.txt : wc -l consonant.txt
+
+ 14.Zip/Compress the file from "MyPractical" folder.
+     zip -r MyPractical.zip MyPractical
+
+ 15 . to unzip : unzip MyPractical.zip
+
+ -------------------------------------------------------------------------------
+ 1)
+ Write a function foo (int fd, char* buf, int b_size, int n, int skip)
+ that reads to buf from file with file descriptor fd, n blocks of size b_size each.
+ The last argument specifies how many bytes to skip after reading each block.
+ Return -1 if the operation is unsuccessful.
+ Else return total number of bytes read. (Write a C Program)
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h> 
+#include <unistd.h>
+
+int foo(int fd, char *buf, int b_size, int n, int skip) { 
+	int total_bytes_read = 0;
+
+for (int i = 0; i < n; i++) {
+int bytes_read = read(fd, buf, b_size); 
+if (bytes_read == -1) {
+perror("read");
+ return -1;
+}
+
+total_bytes_read += bytes_read;
+
+if (lseek(fd, skip, SEEK_CUR) == -1) { 
+perror("lseek");
+return -1;
+ }
+}
+
+return total_bytes_read;
+}
+
+int main() {
+int fd, n, b_size, skip, bytes_read; 
+char ﬁlename[100], buf[1024];
+
+printf("Enter the ﬁlename: ");
+ scanf("%s", ﬁlename);
+
+printf("Enter the number of blocks to read: ");
+ scanf("%d", &n);
+
+printf("Enter the block size: ");
+ scanf("%d", &b_size);
+
+printf("Enter the number of bytes to skip after each block: ");
+ scanf("%d", &skip);
+
+fd = open(ﬁlename, O_RDONLY);
+ if (fd == -1) {
+perror("open");
+ exit(1);
+}
+
+bytes_read = foo(fd, buf, b_size, n, skip);
+ if (bytes_read == -1) {
+perror("foo"); 
+exit(1);
+}
+
+printf("Read %d bytes from ﬁle\n", bytes_read);
+
+close(fd);
+ return 0;
+}
+
+
+---------------------------------------------------------------
+
+
+2)Write a program to read all txt files (that is files that ends with .txt)
+ in the current directory and merge them all to one txt file and returns a file descriptor 
+ for the new file. (Write a C Program)
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <dirent.h>
+
+#include <string.h>
+
+#include <sys/types.h>
+
+#include <sys/stat.h>
+
+#include <fcntl.h>
+
+int main() {
+
+  DIR *dir;
+
+  struct dirent *entry;
+
+  char *new_file_name = "merged_txt.txt";
+
+  int new_file_fd;
+
+  FILE *new_file;
+
+
+
+  dir = opendir(".");
+
+  if (dir == NULL) {
+
+    printf("Could not open directory\n");
+
+    return -1;
+
+  }
+
+
+
+  new_file_fd = open(new_file_name, O_WRONLY | O_CREAT, 0666);
+
+  if (new_file_fd == -1) {
+
+    printf("Could not create new file\n");
+
+    return -1;
+
+  }
+
+
+
+  new_file = fdopen(new_file_fd, "w");
+
+  if (new_file == NULL) {
+
+    printf("Could not open new file for writing\n");
+
+    return -1;
+
+  }
+
+
+
+  while ((entry = readdir(dir)) != NULL) {
+
+    char *file_name = entry->d_name;
+
+    int len = strlen(file_name);
+
+    if (len <= 4) {
+
+      continue;
+
+    }
+
+
+
+    if (strcmp(file_name + len - 4, ".txt") != 0) {
+
+      continue;
+
+    }
+
+
+
+    FILE *file = fopen(file_name, "r");
+
+    if (file == NULL) {
+
+      printf("Could not open file %s\n", file_name);
+
+      continue;
+
+    }
+
+
+
+    char ch;
+
+    while ((ch = fgetc(file)) != EOF) {
+
+      fputc(ch, new_file);
+
+    }
+
+
+
+    fclose(file);
+
+  }
+
+
+
+  fclose(new_file);
+
+  closedir(dir);
+
+
+
+  printf("Successfully merged all txt files into %s\n", new_file_name);
+
+  return new_file_fd;
+
+}
+
+----------------------------------------------------------------------------
+
+3)Write a program that will categorize all files in the current folder based on their file type.
+ That is all .txt file in one folder called txt, all .bmp files in another folder called bmp etc.
+ The argument to the program is a folder name. (Write a C Program)
+ 
+ #include <sys/stat.h>
+
+
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <dirent.h>
+
+#include <string.h>
+
+
+
+void categorize_files(char *folder_name) {
+
+  DIR *dir;
+
+  struct dirent *entry;
+
+  char *file_type;
+
+  char *new_folder_name;
+
+
+
+  dir = opendir(folder_name);
+
+  if (dir == NULL) {
+
+    printf("Could not open directory\n");
+
+    return;
+
+  }
+
+
+
+  while ((entry = readdir(dir)) != NULL) {
+
+    file_type = strrchr(entry->d_name, '.');
+
+    if (file_type == NULL) {
+
+      continue;
+
+    }
+
+
+
+    new_folder_name = malloc(strlen(folder_name) + strlen(file_type) + 2);
+
+    strcpy(new_folder_name, folder_name);
+
+    strcat(new_folder_name, "/");
+
+    strcat(new_folder_name, file_type);
+
+
+
+    if (!mkdir(new_folder_name, 0777)) {
+
+      printf("Could not create folder %s\n", new_folder_name);
+
+      continue;
+
+    }
+
+
+
+    if (strcmp(file_type, ".txt") == 0) {
+
+      printf("Moving file %s to %s\n", entry->d_name, new_folder_name);
+
+      rename(entry->d_name, new_folder_name);
+
+    }
+
+  }
+
+
+
+  closedir(dir);
+
+}
+
+
+
+int main() {
+
+  char *folder_name = ".";
+
+  categorize_files(folder_name);
+
+  return 0;
+
+}
+
+------------------------------------------------------------------------
+
+4)Given a directory, write a program that will find all files with the same name
+ in the directory and its sub directories. Show their name, which folder they are in
+ and what day they were created. Expand the program to remove all duplicate copies
+ based on user input. That is, ask user if each one of the files is to be kept or deleted.
+ Based on user input, perform the appropriate action. (Write a C Program)
+
+
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <dirent.h>
+
+#include <string.h>
+
+#include <time.h>
+
+
+
+struct file_info {
+
+  char *name;
+
+  char *folder;
+
+  time_t created_at;
+
+};
+
+
+
+void find_duplicate_files(char *directory) {
+
+  DIR *dir;
+
+  struct dirent *entry;
+
+  struct file_info *files;
+
+  int num_files;
+
+  int i;
+
+
+
+  dir = opendir(directory);
+
+  if (dir == NULL) {
+
+    printf("Could not open directory\n");
+
+    return;
+
+  }
+
+
+
+  num_files = 0;
+
+  files = malloc(sizeof(struct file_info) * 1024);
+
+
+
+  while ((entry = readdir(dir)) != NULL) {
+
+    struct file_info *file = &files[num_files];
+
+    file->name = entry->d_name;
+
+    file->folder = directory;
+
+    file->created_at = entry->d_type;
+
+    num_files++;
+
+  }
+
+
+
+  closedir(dir);
+
+
+
+  for (i = 0; i < num_files; i++) {
+
+    struct file_info *file = &files[i];
+
+    printf("File name: %s\nFolder: %s\nCreated at: %s\n", file->name, file->folder, ctime(&file->created_at));
+
+  }
+
+}
+
+
+
+void remove_duplicate_files(struct file_info *files, int num_files) {
+
+  int i;
+
+  int j;
+
+
+
+  for (i = 0; i < num_files; i++) {
+
+    for (j = i + 1; j < num_files; j++) {
+
+      if (strcmp(files[i].name, files[j].name) == 0) {
+
+        int keep_file = 0;
+
+        printf("File %s found in two folders. Keep file? (1 = yes, 0 = no)\n", files[i].name);
+
+        scanf("%d", &keep_file);
+
+
+
+        if (!keep_file) {
+
+          remove(files[j].name);
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
+
+
+
+int main() {
+
+  struct file_info *files;
+
+  int num_files;
+
+
+
+  char *directory = ".";
+
+  find_duplicate_files(directory);
+
+  remove_duplicate_files(files, num_files);
+
+  return 0;
+
+}
+
+--------------------------------------------------------------------------
+
+
+5)Write a C program called sumfact.c that does the following:
+i. Takes an integer argument (say, N1) from the command line.
+ii. Forks two children processes
+a. First child computes 1+2+...+N1 (sum of positive integers up to N1) and prints out the result and its own identifier.
+b. Second child computes 1*2*...*N1 (the factorial of N1) and prints out the result and its own identifier.
+iii. Parent waits until both children are finished, then prints out the message “Done” and its own identifier.
+Sample execution,
+Input value is: 5
+Output as:
+Sum of positive integers up to 5 is 15
+Factorial of 5 is 120
+Done
+
+
+
+#include <sys/wait.h>
+
+
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+
+
+int main(int argc, char *argv[]) {
+
+  int n1;
+
+  int pid;
+
+  int sum;
+
+  int fact;
+
+
+
+  if (argc != 2) {
+
+    printf("Usage: %s <N1>\n", argv[0]);
+
+    return 1;
+
+  }
+
+
+
+  n1 = atoi(argv[1]);
+
+
+
+  pid = fork();
+
+  if (pid == 0) {
+
+    // Child 1
+
+    sum = 0;
+
+    for (int i = 1; i <= n1; i++) {
+
+      sum += i;
+
+    }
+
+    printf("Sum of positive integers up to %d is %d\n", n1, sum);
+
+    printf("Child 1 (PID = %d)\n", getpid());
+
+    exit(0);
+
+  } else if (pid > 0) {
+
+    // Parent
+
+    pid = fork();
+
+    if (pid == 0) {
+
+      // Child 2
+
+      fact = 1;
+
+      for (int i = 1; i <= n1; i++) {
+
+        fact *= i;
+
+      }
+
+      printf("Factorial of %d is %d\n", n1, fact);
+
+      printf("Child 2 (PID = %d)\n", getpid());
+
+      exit(0);
+
+    } else {
+
+      // Parent
+
+      waitpid(pid, NULL, 0);
+
+      waitpid(pid, NULL, 0);
+
+      printf("Done (PID = %d)\n", getpid());
+
+    }
+
+  } else {
+
+    printf("Failed to fork\n");
+
+    return 1;
+
+  }
+
+
+
+  return 0;
+
+}
+
+--------------------------------------------------------------------------
+
+
+6)Write a program tree.c that creates the tree of processes illustrated below. Each process in the tree should print its own identifier.
+Sample execution:
+Output as:
+I am the root parent
+My parent is [100]
+My parent is [100]
+My parent is [102]
+My parent is [101]
+
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <unistd.h>
+
+
+
+int main() {
+
+  int pid;
+
+
+
+  pid = fork();
+
+  if (pid == 0) {
+
+    // Child 1
+
+    printf("I am child 1 (PID = %d)\n", getpid());
+
+    pid = fork();
+
+    if (pid == 0) {
+
+      // Grandchild 1
+
+      printf("I am grandchild 1 (PID = %d)\n", getpid());
+
+    } else {
+
+      // Child 1
+
+      printf("I am child 1 (PID = %d)\n", getpid());
+
+    }
+
+  } else {
+
+    // Parent
+
+    pid = fork();
+
+    if (pid == 0) {
+
+      // Child 2
+
+      printf("I am child 2 (PID = %d)\n", getpid());
+
+      pid = fork();
+
+      if (pid == 0) {
+
+        // Grandchild 2
+
+        printf("I am grandchild 2 (PID = %d)\n", getpid());
+
+      } else {
+
+        // Child 2
+
+        printf("I am child 2 (PID = %d)\n", getpid());
+
+      }
+
+    } else {
+
+      // Parent
+
+      printf("I am the parent process (PID = %d)\n", getpid());
+
+    }
+
+  }
+
+
+
+  return 0;
+
+}
+
