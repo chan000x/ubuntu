@@ -77,12 +77,51 @@ for example, "2024" : cal 2024
  15 . to unzip : unzip MyPractical.zip
 
  -------------------------------------------------------------------------------
- 1)
- Write a function foo (int fd, char* buf, int b_size, int n, int skip)
+
+1)Write a function foo (int fd, char* buf, int b_size, int n, int skip)
  that reads to buf from file with file descriptor fd, n blocks of size b_size each.
  The last argument specifies how many bytes to skip after reading each block.
  Return -1 if the operation is unsuccessful.
  Else return total number of bytes read. (Write a C Program)
+
+2)Write a program to read all txt files (that is files that ends with .txt)
+ in the current directory and merge them all to one txt file and returns a file descriptor 
+ for the new file. (Write a C Program)
+
+3)Write a program that will categorize all files in the current folder based on their file type.
+ That is all .txt file in one folder called txt, all .bmp files in another folder called bmp etc.
+ The argument to the program is a folder name. (Write a C Program)
+
+4)Given a directory, write a program that will find all files with the same name
+ in the directory and its sub directories. Show their name, which folder they are in
+ and what day they were created. Expand the program to remove all duplicate copies
+ based on user input. That is, ask user if each one of the files is to be kept or deleted.
+ Based on user input, perform the appropriate action. (Write a C Program)
+
+5)Write a C program called sumfact.c that does the following:
+i. Takes an integer argument (say, N1) from the command line.
+ii. Forks two children processes
+a. First child computes 1+2+...+N1 (sum of positive integers up to N1) and prints out the result and its own identifier.
+b. Second child computes 1*2*...*N1 (the factorial of N1) and prints out the result and its own identifier.
+iii. Parent waits until both children are finished, then prints out the message “Done” and its own identifier.
+Sample execution,
+Input value is: 5
+Output as:
+Sum of positive integers up to 5 is 15
+Factorial of 5 is 120
+Done
+
+6)Write a program tree.c that creates the tree of processes illustrated below. Each process in the tree should print its own identifier.
+Sample execution:
+Output as:
+I am the root parent
+My parent is [100]
+My parent is [100]
+My parent is [102]
+My parent is [101]
+--------------------------------------------------------------------------------
+ 1)
+ 
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -148,9 +187,7 @@ close(fd);
 ---------------------------------------------------------------
 
 
-2)Write a program to read all txt files (that is files that ends with .txt)
- in the current directory and merge them all to one txt file and returns a file descriptor 
- for the new file. (Write a C Program)
+2)
 
 #include <stdio.h>
 
@@ -280,13 +317,9 @@ int main() {
 
 ----------------------------------------------------------------------------
 
-3)Write a program that will categorize all files in the current folder based on their file type.
- That is all .txt file in one folder called txt, all .bmp files in another folder called bmp etc.
- The argument to the program is a folder name. (Write a C Program)
+3)
  
  #include <sys/stat.h>
-
-
 
 #include <stdio.h>
 
@@ -384,11 +417,7 @@ int main() {
 
 ------------------------------------------------------------------------
 
-4)Given a directory, write a program that will find all files with the same name
- in the directory and its sub directories. Show their name, which folder they are in
- and what day they were created. Expand the program to remove all duplicate copies
- based on user input. That is, ask user if each one of the files is to be kept or deleted.
- Based on user input, perform the appropriate action. (Write a C Program)
+4)
 
 
 
@@ -539,18 +568,7 @@ int main() {
 --------------------------------------------------------------------------
 
 
-5)Write a C program called sumfact.c that does the following:
-i. Takes an integer argument (say, N1) from the command line.
-ii. Forks two children processes
-a. First child computes 1+2+...+N1 (sum of positive integers up to N1) and prints out the result and its own identifier.
-b. Second child computes 1*2*...*N1 (the factorial of N1) and prints out the result and its own identifier.
-iii. Parent waits until both children are finished, then prints out the message “Done” and its own identifier.
-Sample execution,
-Input value is: 5
-Output as:
-Sum of positive integers up to 5 is 15
-Factorial of 5 is 120
-Done
+5)
 
 
 
@@ -665,14 +683,7 @@ int main(int argc, char *argv[]) {
 --------------------------------------------------------------------------
 
 
-6)Write a program tree.c that creates the tree of processes illustrated below. Each process in the tree should print its own identifier.
-Sample execution:
-Output as:
-I am the root parent
-My parent is [100]
-My parent is [100]
-My parent is [102]
-My parent is [101]
+6)
 
 
 #include <stdio.h>
