@@ -78,6 +78,68 @@ for example, "2024" : cal 2024
 
  -------------------------------------------------------------------------------
 
+1) Create two additional user accounts "tux1" :
+         sudo adduser tux1
+   To verify : sudo cat /etc/passwd | grep tux
+   
+2) To view the contents of the /etc/passwd file
+	cat /etc/passwd | grep tux
+   To view the contents of the /etc/shadow file
+	sudo cat /etc/shadow | grep tux
+   To view the contents of the /etc/group file
+	cat /etc/group | grep tux
+   To view the contents of the /etc/gshadow file
+	sudo cat /etc/gshadow | grep tux
+   To view the home directories of the users
+	ls /home/tux1
+	ls /home/tux2
+   To compare the contents of the home directories to /etc/skel
+	ls /etc/skel
+	
+3)to log in as the user "tux1”
+	su - tux1
+
+4) Lock the tux1 user account:
+	sudo passwd -l tux1
+	
+5) Unlock the tux1 user account :
+     sudo passwd -u tux1
+6)  Modify the password aging parameters :
+      sudo chage -d 0 tux1
+7)  Create an additional group "penguins".
+      sudo groupadd penguins 
+8) Make the users "tux1"  member of this group.
+      sudo usermod -aG penguins tux1
+9)  Change the last change date of the password of tux1 to 31 days ago
+      sudo chage -d $(date -d "31 days ago" +%Y-%m-%d) tux1
+10) Set the maximum number of days between password changes to 30 days
+       sudo chage -M 30 tux1
+11) Look at the password aging information for tux1
+       sudo chage -l tux1
+-------------------------------------------------------------------------------
+1)  Create a user called kornuser, give him the Korn shell (/bin/ksh)
+     as his default shell. Log on with this user	   :
+	     sudo useradd -s /bin/ksh kornuser
+         su - kornuser
+2)  Create a user named einstime without home directory, give him /bin/date as his default logon shell
+        sudo useradd --no-create-home -s /bin/date einstime
+3)  Lock the venus user account with usermod.
+        sudo usermod -L venus
+4)  Use passwd -d to disable the serena password.
+       sudo passwd -d serena
+5)   locking a user account is a temporary measure to prevent a user from accessing the system,
+     while disabling a user account's password is a more permanent measure to revoke a user's	 access to the system.  
+6)  As root change the password of einstime to stargate.
+        sudo passwd einstime
+7)  Make sure every new user needs to change his password every 10 days
+        sudo nano /etc/login.defs PASS_MAX_DAYS 10
+8)  Set the warning number of days to four for the kornuser
+        sudo chage -W 4 kornuser
+9)  Put a file in the skeleton directory and check whether it is copied to user's home directory.
+    When is the skeleton directory copied?  sudo cp /path/to/example.txt /etc/skel/
+
+------------------------------------------------------------------------
+
 1)Write a function foo (int fd, char* buf, int b_size, int n, int skip)
  that reads to buf from file with file descriptor fd, n blocks of size b_size each.
  The last argument specifies how many bytes to skip after reading each block.
