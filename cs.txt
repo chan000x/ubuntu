@@ -1,832 +1,206 @@
- 1. To show which version is installed on your system : cat /etc/os-release
- 
-2. To show the name of the currently logged user : whoami
+----------------------------------------------------------------------
+//Date of Birth calculator
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Age Calc</title>
+    <script src="ageCalculator.js"></script>
+  </head>
 
-3. To show the current month calendar with the current date highlighted : cal
+  <body>
+    <form method="post" onsubmit="calculateAge(event)">
+      <label for="id">ID No:</label>
+      <input type="text" placeholder="enter-your-id" name="id" id="id" required autocomplete="on" />
+      <input type="submit" value="Calculate" name="submit" />
+    </form>
 
-4. To show the calendar of a specific month of the year
-for example, "September2023" : cal 9 2023
-
-5. To show calendar for the current whole year with the current date highlighted : cal -y
-
-6. To show the whole calendar for a specific year 
-for example, "2024" : cal 2024
-
-7. To show the calendar of previous, current (along with current date highlighted) and next month : cal -3
-
-8. To print the following message on the screen "About 90% of the internet is powered by "Linux" servers." :
-   echo "About 90% of the internet is powered by \"Linux\" servers." 
-9. To show your home directory : echo ~ 
-
-10. To list all files in your home directory : ls 
------------------------------------------------------------------
-
-
-8. Append the content of the "myfirstfile.txt" to "mysecondfile.txt":
-      cat ./doc1/myfirstfile.txt >> ./doc2/mysecondfile.txt
-
-12. Show the folder hierarchy of "/home" in a tree structure.
-      tree /home
-
-13. Give execution permission to "myfirstfile.txt".
-       chmod +x ./mylocal/src/doc_folder/myfirstfile.txt
-14. Remove permission to write for the "mysecondfile.txt".
-       chmod -w ./mylocal/src/doc/folder/mysecondfile.txt
-15. Add permission to write only to the owner and the group for the "mythirdfile.txt".
-        chmod 664 ./mylocal/src/doc/folder/mythirdfile.txt
-16. Restrict all permission to any user for the folder "home/mylocal/doc-folder".
-        chmod 000 ./mylocal/src/doc_folder
-17. Do not give permission to any other user to edit or execute files in the folder "csc_docs".
-         chmod o-wx ./csc_docs
- 
- 
- -----------------------------------------------------------------------------
- 
- 1. Display your current directory : pwd
-2. Change the directory to Object directory : cd Object
-
-3. Create a new directory called Integer within your current working directory (Object) : mkdir Integer
-
-4. List all the directories in Object : ls -d
-
-5. Rename Integer to NewInteger : mv Integer NewInteger
-
-6. Create a file called testl.txt under the Vowel directory : cd Vowel
-                                                              touch testl.txt
-
-7. Create a file called test2.txt under the Digit directory : cd Digit
-                                                              touch test2.txt
-
-8. Rename testl.txt to vowel.txt and add the letters. "a, e, i, o, u" in that file : mv testl.txt vowel.txt
-                                                                                     echo "a, e, i, o, u" >> vowel.txt
-
-9. Change the access permission for vowel.txt to read only : chmod 444 vowel.txt
-
-10. Copy vowel.txt from Vowel directory to Consonant directory : cp vowel.txt Consonant
-
-11. Change the access permission for vowel.txt from read only to read and write : chmod 644 vowel.txt
-
-12. Rename vowel.txt to consonant txt and add the consonant letters in that file : mv vowel.txt consonant.txt
-																				echo "b, c, d, f, g" >> consonant.txt
-
-13. Count number of lines in consonant.txt : wc -l consonant.txt
-
- 14.Zip/Compress the file from "MyPractical" folder.
-     zip -r MyPractical.zip MyPractical
-
- 15 . to unzip : unzip MyPractical.zip
-
- -------------------------------------------------------------------------------
-
-1) Create two additional user accounts "tux1" :
-         sudo adduser tux1
-   To verify : sudo cat /etc/passwd | grep tux
-   
-2) To view the contents of the /etc/passwd file
-	cat /etc/passwd | grep tux
-   To view the contents of the /etc/shadow file
-	sudo cat /etc/shadow | grep tux
-   To view the contents of the /etc/group file
-	cat /etc/group | grep tux
-   To view the contents of the /etc/gshadow file
-	sudo cat /etc/gshadow | grep tux
-   To view the home directories of the users
-	ls /home/tux1
-	ls /home/tux2
-   To compare the contents of the home directories to /etc/skel
-	ls /etc/skel
+    <div id="result"></div>
 	
-3)to log in as the user "tux1”
-	su - tux1
-
-4) Lock the tux1 user account:
-	sudo passwd -l tux1
-	
-5) Unlock the tux1 user account :
-     sudo passwd -u tux1
-6)  Modify the password aging parameters :
-      sudo chage -d 0 tux1
-7)  Create an additional group "penguins".
-      sudo groupadd penguins 
-8) Make the users "tux1"  member of this group.
-      sudo usermod -aG penguins tux1
-9)  Change the last change date of the password of tux1 to 31 days ago
-      sudo chage -d $(date -d "31 days ago" +%Y-%m-%d) tux1
-10) Set the maximum number of days between password changes to 30 days
-       sudo chage -M 30 tux1
-11) Look at the password aging information for tux1
-       sudo chage -l tux1
--------------------------------------------------------------------------------
-1)  Create a user called kornuser, give him the Korn shell (/bin/ksh)
-     as his default shell. Log on with this user	   :
-	     sudo useradd -s /bin/ksh kornuser
-         su - kornuser
-2)  Create a user named einstime without home directory, give him /bin/date as his default logon shell
-        sudo useradd --no-create-home -s /bin/date einstime
-3)  Lock the venus user account with usermod.
-        sudo usermod -L venus
-4)  Use passwd -d to disable the serena password.
-       sudo passwd -d serena
-5)   locking a user account is a temporary measure to prevent a user from accessing the system,
-     while disabling a user account's password is a more permanent measure to revoke a user's	 access to the system.  
-6)  As root change the password of einstime to stargate.
-        sudo passwd einstime
-7)  Make sure every new user needs to change his password every 10 days
-        sudo nano /etc/login.defs PASS_MAX_DAYS 10
-8)  Set the warning number of days to four for the kornuser
-        sudo chage -W 4 kornuser
-9)  Put a file in the skeleton directory and check whether it is copied to user's home directory.
-    When is the skeleton directory copied?  sudo cp /path/to/example.txt /etc/skel/
-
-------------------------------------------------------------------------
-
-1)Write a function foo (int fd, char* buf, int b_size, int n, int skip)
- that reads to buf from file with file descriptor fd, n blocks of size b_size each.
- The last argument specifies how many bytes to skip after reading each block.
- Return -1 if the operation is unsuccessful.
- Else return total number of bytes read. (Write a C Program)
-
-2)Write a program to read all txt files (that is files that ends with .txt)
- in the current directory and merge them all to one txt file and returns a file descriptor 
- for the new file. (Write a C Program)
-
-3)Write a program that will categorize all files in the current folder based on their file type.
- That is all .txt file in one folder called txt, all .bmp files in another folder called bmp etc.
- The argument to the program is a folder name. (Write a C Program)
-
-4)Given a directory, write a program that will find all files with the same name
- in the directory and its sub directories. Show their name, which folder they are in
- and what day they were created. Expand the program to remove all duplicate copies
- based on user input. That is, ask user if each one of the files is to be kept or deleted.
- Based on user input, perform the appropriate action. (Write a C Program)
-
-5)Write a C program called sumfact.c that does the following:
-i. Takes an integer argument (say, N1) from the command line.
-ii. Forks two children processes
-a. First child computes 1+2+...+N1 (sum of positive integers up to N1) and prints out the result and its own identifier.
-b. Second child computes 1*2*...*N1 (the factorial of N1) and prints out the result and its own identifier.
-iii. Parent waits until both children are finished, then prints out the message “Done” and its own identifier.
-Sample execution,
-Input value is: 5
-Output as:
-Sum of positive integers up to 5 is 15
-Factorial of 5 is 120
-Done
-
-6)Write a program tree.c that creates the tree of processes illustrated below. Each process in the tree should print its own identifier.
-Sample execution:
-Output as:
-I am the root parent
-My parent is [100]
-My parent is [100]
-My parent is [102]
-My parent is [101]
---------------------------------------------------------------------------------
- 1)
- 
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h> 
-#include <unistd.h>
-
-int foo(int fd, char *buf, int b_size, int n, int skip) { 
-	int total_bytes_read = 0;
-
-for (int i = 0; i < n; i++) {
-int bytes_read = read(fd, buf, b_size); 
-if (bytes_read == -1) {
-perror("read");
- return -1;
-}
-
-total_bytes_read += bytes_read;
-
-if (lseek(fd, skip, SEEK_CUR) == -1) { 
-perror("lseek");
-return -1;
- }
-}
-
-return total_bytes_read;
-}
-
-int main() {
-int fd, n, b_size, skip, bytes_read; 
-char ﬁlename[100], buf[1024];
-
-printf("Enter the ﬁlename: ");
- scanf("%s", ﬁlename);
-
-printf("Enter the number of blocks to read: ");
- scanf("%d", &n);
-
-printf("Enter the block size: ");
- scanf("%d", &b_size);
-
-printf("Enter the number of bytes to skip after each block: ");
- scanf("%d", &skip);
-
-fd = open(ﬁlename, O_RDONLY);
- if (fd == -1) {
-perror("open");
- exit(1);
-}
-
-bytes_read = foo(fd, buf, b_size, n, skip);
- if (bytes_read == -1) {
-perror("foo"); 
-exit(1);
-}
-
-printf("Read %d bytes from ﬁle\n", bytes_read);
-
-close(fd);
- return 0;
-}
-
-
----------------------------------------------------------------
-
-
-2)
-
-#include <stdio.h>
-
-#include <stdlib.h>
-
-#include <dirent.h>
-
-#include <string.h>
-
-#include <sys/types.h>
-
-#include <sys/stat.h>
-
-#include <fcntl.h>
-
-int main() {
-
-  DIR *dir;
-
-  struct dirent *entry;
-
-  char *new_file_name = "merged_txt.txt";
-
-  int new_file_fd;
-
-  FILE *new_file;
-
-
-
-  dir = opendir(".");
-
-  if (dir == NULL) {
-
-    printf("Could not open directory\n");
-
-    return -1;
-
-  }
-
-
-
-  new_file_fd = open(new_file_name, O_WRONLY | O_CREAT, 0666);
-
-  if (new_file_fd == -1) {
-
-    printf("Could not create new file\n");
-
-    return -1;
-
-  }
-
-
-
-  new_file = fdopen(new_file_fd, "w");
-
-  if (new_file == NULL) {
-
-    printf("Could not open new file for writing\n");
-
-    return -1;
-
-  }
-
-
-
-  while ((entry = readdir(dir)) != NULL) {
-
-    char *file_name = entry->d_name;
-
-    int len = strlen(file_name);
-
-    if (len <= 4) {
-
-      continue;
-
-    }
-
-
-
-    if (strcmp(file_name + len - 4, ".txt") != 0) {
-
-      continue;
-
-    }
-
-
-
-    FILE *file = fopen(file_name, "r");
-
-    if (file == NULL) {
-
-      printf("Could not open file %s\n", file_name);
-
-      continue;
-
-    }
-
-
-
-    char ch;
-
-    while ((ch = fgetc(file)) != EOF) {
-
-      fputc(ch, new_file);
-
-    }
-
-
-
-    fclose(file);
-
-  }
-
-
-
-  fclose(new_file);
-
-  closedir(dir);
-
-
-
-  printf("Successfully merged all txt files into %s\n", new_file_name);
-
-  return new_file_fd;
-
-}
-
-----------------------------------------------------------------------------
-
-3)
- 
- #include <sys/stat.h>
-
-#include <stdio.h>
-
-#include <stdlib.h>
-
-#include <dirent.h>
-
-#include <string.h>
-
-
-
-void categorize_files(char *folder_name) {
-
-  DIR *dir;
-
-  struct dirent *entry;
-
-  char *file_type;
-
-  char *new_folder_name;
-
-
-
-  dir = opendir(folder_name);
-
-  if (dir == NULL) {
-
-    printf("Could not open directory\n");
-
-    return;
-
-  }
-
-
-
-  while ((entry = readdir(dir)) != NULL) {
-
-    file_type = strrchr(entry->d_name, '.');
-
-    if (file_type == NULL) {
-
-      continue;
-
-    }
-
-
-
-    new_folder_name = malloc(strlen(folder_name) + strlen(file_type) + 2);
-
-    strcpy(new_folder_name, folder_name);
-
-    strcat(new_folder_name, "/");
-
-    strcat(new_folder_name, file_type);
-
-
-
-    if (!mkdir(new_folder_name, 0777)) {
-
-      printf("Could not create folder %s\n", new_folder_name);
-
-      continue;
-
-    }
-
-
-
-    if (strcmp(file_type, ".txt") == 0) {
-
-      printf("Moving file %s to %s\n", entry->d_name, new_folder_name);
-
-      rename(entry->d_name, new_folder_name);
-
-    }
-
-  }
-
-
-
-  closedir(dir);
-
-}
-
-
-
-int main() {
-
-  char *folder_name = ".";
-
-  categorize_files(folder_name);
-
-  return 0;
-
-}
-
-------------------------------------------------------------------------
-
-4)
-
-
-
-#include <stdio.h>
-
-#include <stdlib.h>
-
-#include <dirent.h>
-
-#include <string.h>
-
-#include <time.h>
-
-
-
-struct file_info {
-
-  char *name;
-
-  char *folder;
-
-  time_t created_at;
-
-};
-
-
-
-void find_duplicate_files(char *directory) {
-
-  DIR *dir;
-
-  struct dirent *entry;
-
-  struct file_info *files;
-
-  int num_files;
-
-  int i;
-
-
-
-  dir = opendir(directory);
-
-  if (dir == NULL) {
-
-    printf("Could not open directory\n");
-
-    return;
-
-  }
-
-
-
-  num_files = 0;
-
-  files = malloc(sizeof(struct file_info) * 1024);
-
-
-
-  while ((entry = readdir(dir)) != NULL) {
-
-    struct file_info *file = &files[num_files];
-
-    file->name = entry->d_name;
-
-    file->folder = directory;
-
-    file->created_at = entry->d_type;
-
-    num_files++;
-
-  }
-
-
-
-  closedir(dir);
-
-
-
-  for (i = 0; i < num_files; i++) {
-
-    struct file_info *file = &files[i];
-
-    printf("File name: %s\nFolder: %s\nCreated at: %s\n", file->name, file->folder, ctime(&file->created_at));
-
-  }
-
-}
-
-
-
-void remove_duplicate_files(struct file_info *files, int num_files) {
-
-  int i;
-
-  int j;
-
-
-
-  for (i = 0; i < num_files; i++) {
-
-    for (j = i + 1; j < num_files; j++) {
-
-      if (strcmp(files[i].name, files[j].name) == 0) {
-
-        int keep_file = 0;
-
-        printf("File %s found in two folders. Keep file? (1 = yes, 0 = no)\n", files[i].name);
-
-        scanf("%d", &keep_file);
-
-
-
-        if (!keep_file) {
-
-          remove(files[j].name);
-
-        }
-
-      }
-
-    }
-
-  }
-
-}
-
-
-
-int main() {
-
-  struct file_info *files;
-
-  int num_files;
-
-
-
-  char *directory = ".";
-
-  find_duplicate_files(directory);
-
-  remove_duplicate_files(files, num_files);
-
-  return 0;
-
-}
-
---------------------------------------------------------------------------
-
-
-5)
-
-
-
-#include <sys/wait.h>
-
-
-
-#include <stdio.h>
-
-#include <stdlib.h>
-
-#include <unistd.h>
-
-
-
-int main(int argc, char *argv[]) {
-
-  int n1;
-
-  int pid;
-
-  int sum;
-
-  int fact;
-
-
-
-  if (argc != 2) {
-
-    printf("Usage: %s <N1>\n", argv[0]);
-
-    return 1;
-
-  }
-
-
-
-  n1 = atoi(argv[1]);
-
-
-
-  pid = fork();
-
-  if (pid == 0) {
-
-    // Child 1
-
-    sum = 0;
-
-    for (int i = 1; i <= n1; i++) {
-
-      sum += i;
-
-    }
-
-    printf("Sum of positive integers up to %d is %d\n", n1, sum);
-
-    printf("Child 1 (PID = %d)\n", getpid());
-
-    exit(0);
-
-  } else if (pid > 0) {
-
-    // Parent
-
-    pid = fork();
-
-    if (pid == 0) {
-
-      // Child 2
-
-      fact = 1;
-
-      for (int i = 1; i <= n1; i++) {
-
-        fact *= i;
-
-      }
-
-      printf("Factorial of %d is %d\n", n1, fact);
-
-      printf("Child 2 (PID = %d)\n", getpid());
-
-      exit(0);
-
-    } else {
-
-      // Parent
-
-      waitpid(pid, NULL, 0);
-
-      waitpid(pid, NULL, 0);
-
-      printf("Done (PID = %d)\n", getpid());
-
-    }
-
-  } else {
-
-    printf("Failed to fork\n");
-
-    return 1;
-
-  }
-
-
-
-  return 0;
-
-}
-
---------------------------------------------------------------------------
-
-
-6)
-
-
-#include <stdio.h>
-
-#include <stdlib.h>
-
-#include <unistd.h>
-
-
-
-int main() {
-
-  int pid;
-
-
-
-  pid = fork();
-
-  if (pid == 0) {
-
-    // Child 1
-
-    printf("I am child 1 (PID = %d)\n", getpid());
-
-    pid = fork();
-
-    if (pid == 0) {
-
-      // Grandchild 1
-
-      printf("I am grandchild 1 (PID = %d)\n", getpid());
-
-    } else {
-
-      // Child 1
-
-      printf("I am child 1 (PID = %d)\n", getpid());
-
-    }
-
-  } else {
-
-    // Parent
-
-    pid = fork();
-
-    if (pid == 0) {
-
-      // Child 2
-
-      printf("I am child 2 (PID = %d)\n", getpid());
-
-      pid = fork();
-
-      if (pid == 0) {
-
-        // Grandchild 2
-
-        printf("I am grandchild 2 (PID = %d)\n", getpid());
-
+	<script>
+	// ageCalculator.js
+
+function calculateAge(event) {
+  event.preventDefault();
+  
+  const idNumber = document.getElementById('id').value;
+  const val = {
+    jan: 31,
+    feb: 60,
+    march: 91,
+    april: 121,
+    may: 152,
+    juny: 182,
+    july: 213,
+    aug: 244,
+    sep: 274,
+    oct: 305,
+    nov: 335,
+    dec: 366
+  };
+
+  if (idNumber.length === 10 && (idNumber.endsWith('v') || idNumber.endsWith('V')) && /^\d+$/.test(idNumber.slice(0, 9))) {
+    const year = idNumber.slice(0, 2);
+    const gender = idNumber.slice(2, 5) < 500 ? 'Male' : 'Female';
+    let month = '';
+    let day = 0;
+    const d = idNumber.slice(2, 5) >= 500 ? idNumber.slice(2, 5) - 500 : idNumber.slice(2, 5);
+
+    for (const [x, xVal] of Object.entries(val)) {
+      if (xVal <= d) {
+        day = d - xVal;
       } else {
-
-        // Child 2
-
-        printf("I am child 2 (PID = %d)\n", getpid());
-
+        month = x;
+        break;
       }
-
-    } else {
-
-      // Parent
-
-      printf("I am the parent process (PID = %d)\n", getpid());
-
     }
 
+    const currentYear = new Date().getFullYear();
+    const age = 100 + currentYear - year;
+
+    const result = document.getElementById('result');
+    result.innerHTML = `<br><p style='color:green;font-size:20px;'>Date of Birth :19${year}-${month}-${day}</p>`;
+    result.innerHTML += `<p style='color:skyblue;font-size:20px'>Gender : ${gender}<br>Age : ${age}</p>`;
+
+  } else if (idNumber.length === 12 && /^\d+$/.test(idNumber.slice(0, 12))) {
+    const year = idNumber.slice(0, 4);
+    const gender = idNumber.slice(4, 7) < 500 ? 'Male' : 'Female';
+    let month = '';
+    let day = 0;
+    const d = idNumber.slice(4, 7) >= 500 ? idNumber.slice(4, 7) - 500 : idNumber.slice(4, 7);
+
+    for (const [x, xVal] of Object.entries(val)) {
+      if (xVal <= d) {
+        day = d - xVal;
+      } else {
+        month = x;
+        break;
+      }
+    }
+
+    const currentYear = new Date().getFullYear();
+    const age = currentYear - year.slice(2);
+
+    const result = document.getElementById('result');
+    result.innerHTML = `<br><p style='color:green;font-size:20px;'>Date of Birth : ${year}-${month}-${day}</p>`;
+    result.innerHTML += `<p style='color:skyblue;font-size:20px'>${gender}<br>Age : ${age}</p>`;
+  } else {
+    const result = document.getElementById('result');
+    result.innerHTML = "<br><b><p style='color:red;font-size:20px;'>Enter a valid ID number!</p></b>";
+  }
+}
+
+	</script>
+  </body>
+</html>
+
+
+-------------------------------------------------------------
+
+
+//Roman number to decimal and vice versa
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Roman to Decimal and Decimal to Roman Converter</title>
+    <script src="converter.js"></script>
+  </head>
+  <body>
+    <h1>Roman to Decimal and Decimal to Roman Converter</h1>
+    <label for="input">Enter Roman or Decimal Number:</label>
+    <input type="text" id="input" />
+    <button onclick="convert()">Convert</button>
+    <h3 id="result"></h3>
+	<script>
+	// converter.js
+
+function convert() {
+  const input = document.getElementById('input').value;
+
+  if (isRomanNumeral(input)) {
+    const decimal = romanToDecimal(input);
+    document.getElementById('result').textContent = `Decimal Number: ${decimal}`;
+  } else {
+    const roman = decimalToRoman(Number(input));
+    document.getElementById('result').textContent = `Roman Numeral: ${roman}`;
+  }
+}
+
+// Check if the input is a valid Roman numeral
+function isRomanNumeral(input) {
+  const romanNumeralRegex = /^(M{0,3})(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/;
+  return romanNumeralRegex.test(input);
+}
+
+// Convert a Roman numeral to a decimal number
+function romanToDecimal(roman) {
+  const romanNumeralMap = {
+    M: 1000,
+    CM: 900,
+    D: 500,
+    CD: 400,
+    C: 100,
+    XC: 90,
+    L: 50,
+    XL: 40,
+    X: 10,
+    IX: 9,
+    V: 5,
+    IV: 4,
+    I: 1
+  };
+
+  let result = 0;
+  for (let i = 0; i < roman.length; i++) {
+    const currentNumeral = roman[i];
+    const currentValue = romanNumeralMap[currentNumeral];
+    const nextNumeral = roman[i + 1];
+    const nextValue = romanNumeralMap[nextNumeral];
+
+    if (nextValue > currentValue) {
+      result += nextValue - currentValue;
+      i++;
+    } else {
+      result += currentValue;
+    }
   }
 
-
-
-  return 0;
-
+  return result;
 }
+
+// Convert a decimal number to a Roman numeral
+function decimalToRoman(decimal) {
+  const decimalValueMap = [
+    { value: 1000, numeral: 'M' },
+    { value: 900, numeral: 'CM' },
+    { value: 500, numeral: 'D' },
+    { value: 400, numeral: 'CD' },
+    { value: 100, numeral: 'C' },
+    { value: 90, numeral: 'XC' },
+    { value: 50, numeral: 'L' },
+    { value: 40, numeral: 'XL' },
+    { value: 10, numeral: 'X' },
+    { value: 9, numeral: 'IX' },
+    { value: 5, numeral: 'V' },
+    { value: 4, numeral: 'IV' },
+    { value: 1, numeral: 'I' }
+  ];
+
+  let result = '';
+  let remaining = decimal;
+
+  for (const { value, numeral } of decimalValueMap) {
+    while (remaining >= value) {
+      result += numeral;
+      remaining -= value;
+    }
+  }
+
+  return result;
+}
+
+	
+	</script>
+	
+  </body>
+</html>
 
