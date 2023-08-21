@@ -1,1 +1,200 @@
+---------------------------------------------------------------------------
+import java.util.Scanner;
+
+public class BresenhamAlgorithm {
+    public static void drawLine(int x1, int y1, int x2, int y2) {
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
+        int sx = (x1 < x2) ? 1 : -1;
+        int sy = (y1 < y2) ? 1 : -1;
+        int err = dx - dy;
+
+        while (true) {
+            System.out.println("(" + x1 + ", " + y1 + ")");
+
+            if (x1 == x2 && y1 == y2) {
+                break;
+            }
+
+            int e2 = 2 * err;
+            if (e2 > -dy) {
+                err -= dy;
+                x1 += sx;
+            }
+            if (e2 < dx) {
+                err += dx;
+                y1 += sy;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter x1: ");
+        int x1 = scanner.nextInt();
+        System.out.print("Enter y1: ");
+        int y1 = scanner.nextInt();
+        System.out.print("Enter x2: ");
+        int x2 = scanner.nextInt();
+        System.out.print("Enter y2: ");
+        int y2 = scanner.nextInt();
+
+        drawLine(x1, y1, x2, y2);
+    }
+}
+
+-----------------------------------------------------------------------------
+
+import java.util.Scanner;
+
+public class DDALineDrawing {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter x1: ");
+        int x1 = scanner.nextInt();
+        System.out.print("Enter y1: ");
+        int y1 = scanner.nextInt();
+        System.out.print("Enter x2: ");
+        int x2 = scanner.nextInt();
+        System.out.print("Enter y2: ");
+        int y2 = scanner.nextInt();
+
+        drawLine(x1, y1, x2, y2);
+    }
+
+    public static void drawLine(int x1, int y1, int x2, int y2) {
+        int dx = x2 - x1;
+        int dy = y2 - y1;
+
+        int steps = Math.max(Math.abs(dx), Math.abs(dy));
+
+        float xIncrement = (float) dx / steps;
+        float yIncrement = (float) dy / steps;
+
+        float x = x1;
+        float y = y1;
+
+        System.out.println("Points on the line:");
+        for (int i = 0; i <= steps; i++) {
+            System.out.println("(" + Math.round(x) + ", " + Math.round(y) + ")");
+            x += xIncrement;
+            y += yIncrement;
+        }
+    }
+}
+-----------------------------------------------------------------------------
+
+import java.util.Scanner;
+
+public class IncrementalLineDrawing {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter x1: ");
+        int x1 = scanner.nextInt();
+        System.out.print("Enter y1: ");
+        int y1 = scanner.nextInt();
+        System.out.print("Enter x2: ");
+        int x2 = scanner.nextInt();
+        System.out.print("Enter y2: ");
+        int y2 = scanner.nextInt();
+
+        drawLine(x1, y1, x2, y2);
+    }
+
+    public static void drawLine(int x1, int y1, int x2, int y2) {
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
+        int stepX = x1 < x2 ? 1 : -1;
+        int stepY = y1 < y2 ? 1 : -1;
+
+        int x = x1;
+        int y = y1;
+
+        System.out.println("Points on the line:");
+        System.out.println("(" + x + ", " + y + ")");
+
+        if (dx > dy) {
+            int p = 2 * dy - dx;
+
+            for (int i = 0; i < dx; i++) {
+                if (p >= 0) {
+                    y += stepY;
+                    p -= 2 * dx;
+                }
+                x += stepX;
+                p += 2 * dy;
+
+                System.out.println("(" + x + ", " + y + ")");
+            }
+        } else {
+            int p = 2 * dx - dy;
+
+            for (int i = 0; i < dy; i++) {
+                if (p >= 0) {
+                    x += stepX;
+                    p -= 2 * dy;
+                }
+                y += stepY;
+                p += 2 * dx;
+
+                System.out.println("(" + x + ", " + y + ")");
+            }
+        }
+    }
+}
+--------------------------------------------------------------------------------
+import java.util.Scanner;
+
+public class MidpointCircleDrawing {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("Enter the radius: ");
+        int radius = scanner.nextInt();
+        
+        System.out.print("Enter the center coordinates (x y): ");
+        int centerX = scanner.nextInt();
+        int centerY = scanner.nextInt();
+        
+        drawCircle(centerX, centerY, radius);
+    }
+    
+    public static void drawCircle(int centerX, int centerY, int radius) {
+        int x = 0;
+        int y = radius;
+        int decisionParameter = 1 - radius;
+        
+        while (y >= x) {
+            plotPoints(centerX, centerY, x, y);
+            
+            x++;
+            
+            if (decisionParameter > 0) {
+                y--;
+                decisionParameter += 2 * (x - y) + 1;
+            } else {
+                decisionParameter += 2 * x + 1;
+            }
+            
+            plotPoints(centerX, centerY, x, y);
+        }
+    }
+    
+    public static void plotPoints(int centerX, int centerY, int x, int y) {
+        System.out.println("Point (" + (centerX + x) + ", " + (centerY + y) + ")");
+        System.out.println("Point (" + (centerX - x) + ", " + (centerY + y) + ")");
+        System.out.println("Point (" + (centerX + x) + ", " + (centerY - y) + ")");
+        System.out.println("Point (" + (centerX - x) + ", " + (centerY - y) + ")");
+        System.out.println("Point (" + (centerX + y) + ", " + (centerY + x) + ")");
+        System.out.println("Point (" + (centerX - y) + ", " + (centerY + x) + ")");
+        System.out.println("Point (" + (centerX + y) + ", " + (centerY - x) + ")");
+        System.out.println("Point (" + (centerX - y) + ", " + (centerY - x) + ")");
+    }
+}
+-------------------------------------------------------------------------------------------------------
+
+
 
