@@ -1,4 +1,4 @@
-
+Remove-Item (Get-PSReadlineOption).HistorySavePath
 
 	public void Scaling(Graphics g,int x[],int y[],int sx,int sy)
 	{
