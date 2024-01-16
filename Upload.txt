@@ -60,28 +60,28 @@ Remove-Item (Get-PSReadlineOption).HistorySavePath
 			y[i] += ty;
 		}
 	}
-
-public void Reflect(Graphics g,int x_coordinate,int y_coordinate,double a[][])
+public void Reflect(Graphics g,int x0, int y0, double a[][])
 	{
-		for(int i=0;i<a.length;i++)
+		int n = a.length;
+		for(int i=0;i<n;i++)
 		{
-			double x = a[i][0]-x_coordinate;
-			double y = a[i][1]-y_coordinate;
-			if(y_coordinate == 0)
+			double x = a[i][0] - x0;
+			double y = a[i][1] - y0;
+			if((x0 == 0) &&(y0!=0))
 			{
-				a[i][0] = (x * (-1))+x_coordinate;
+				a[i][1] = y * (-1) + y0;
 			}
-			else if(x_coordinate == 0)
+			else if((x0 != 0) &&(y0==0))
 			{
-				a[i][1] = (y * (-1))+y_coordinate;
+				a[i][0] = x * (-1) + x0;
 			}
 			else{
-				a[i][0] = (x * (-1))+x_coordinate;
-				a[i][1] = (y * (-1))+y_coordinate;
+				a[i][0] = x * (-1) + x0;
+				a[i][1] = y * (-1) + y0;
 			}
-			
 		}
 	}
+
 
 
 
