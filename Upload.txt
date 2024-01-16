@@ -9,7 +9,32 @@ Remove-Item (Get-PSReadlineOption).HistorySavePath
 			y[i] = (int)(y[i] * sy);
 		}
 	}
-		
+	public void Shear(Graphics g,double a[][],int shx,int shy)
+	{
+		int n = a.length;
+		double x,y;
+		for(int i=0;i<n;i++)
+		{
+			x = a[i][0] - centerX;
+			y = a[i][1] - centerY;
+			if(shx>0)
+			{
+				a[i][0] = x + y*shx;
+				a[i][1] = y;
+			}
+			else if(shy>0)
+			{
+				a[i][0] = x;
+				a[i][1] = y + x*shy;
+			}
+			else{
+				a[i][0] = x + y*shx;
+				a[i][1] = y + x*shy;
+			}
+			a[i][0] += centerX;
+			a[i][1] += centerY;
+		}
+	}	
 	public void drawObj(Graphics g,int x[],int y[])
 	{
 		int n = x.length;
